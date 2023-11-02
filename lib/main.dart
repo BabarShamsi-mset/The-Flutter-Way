@@ -9,6 +9,7 @@ class TipCalculatorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tip Calculator',
+      theme: ThemeData(primarySwatch: Colors.red),
       home: TipCalculator(),
     );
   }
