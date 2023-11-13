@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:grocery_app/model/cart_model.dart';
+import 'package:grocery_app/pages/home_page.dart';
+import 'package:grocery_app/pages/intro_page.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const IntroPage());
+  runApp( MaterialApp(home: GroceryApp()), );
 }
 
-class IntroPage extends StatelessWidget {
-  const IntroPage({super.key});
+class GroceryApp extends StatelessWidget {
+  const GroceryApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return ChangeNotifierProvider(create: (context) => CartModel(),
+    child: const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: IntroPage(),
+    ),
+    );
   }
-
 }
-
