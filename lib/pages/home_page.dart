@@ -39,7 +39,7 @@ class HomePage extends StatelessWidget {
         const SizedBox(height: 16,),
 
 
-        Padding(padding: EdgeInsets.symmetric(horizontal: 14.0),
+        Padding(padding: const EdgeInsets.symmetric(horizontal: 14.0),
             child: Text("Let's Order fresh Items for you",
               style: GoogleFonts.notoSerif(
               fontSize: 36,
@@ -48,7 +48,7 @@ class HomePage extends StatelessWidget {
             ),
         ),
 
-        const Padding(padding: const EdgeInsets.symmetric(horizontal: 4),
+        const Padding(padding: EdgeInsets.symmetric(horizontal: 4),
         child: Divider(),
       ),
 
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
         Expanded(child: Consumer<CartModel>(builder: (context, value, child) {
           return GridView.builder(
               itemCount: value.shopItems.length,
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
                 childAspectRatio: 1/ 1.3,

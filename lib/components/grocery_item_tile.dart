@@ -21,7 +21,6 @@ class GroceryItemTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Container(
