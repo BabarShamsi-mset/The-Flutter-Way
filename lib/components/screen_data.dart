@@ -3,7 +3,7 @@
 import 'package:grocery_app/routes/page_route.dart';
 
 class ScreenData extends ScreenArguments {
-  String name;
+  String name ;
   String fatherName = "";
   int age = 0;
 

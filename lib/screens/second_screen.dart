@@ -16,16 +16,21 @@ class SecondScreen extends ScreenRoutesStateless<ScreenData> {
   @override
   Widget build(BuildContext context) {
 
-    final args = ModalRoute.of(context)!.settings.arguments as ScreenData;
+    final args = ModalRoute.of(context)!.settings.arguments as ScreenData?;
+    String name;
+    if(args ==  null) {
+      name = "No Value Passed";
+    }
+    else {
+      name = args.name;
+    }
 
     // TODO: implement build
     return Scaffold(
 
       body: Center(
-        child: Text (args.name),
+        child: Text (name),
       ),
-
-
     );
   }
 
