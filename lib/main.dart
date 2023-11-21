@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:grocery_app/model/cart_model.dart';
 import 'package:grocery_app/pages/intro_page.dart';
 import 'package:grocery_app/routes/routes_names.dart';
-import 'package:grocery_app/screens/first_screen.dart';
-import 'package:grocery_app/screens/second_screen.dart';
+import 'package:grocery_app/screens/info_collector_screen.dart';
+import 'package:grocery_app/screens/profile_view_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -21,8 +21,8 @@ class _GroceryAppState extends State<GroceryApp> {
   int myIndex = 0;
   List<Widget> widgetList = [
     IntroPage(),
-    FirstScreen(screenArguments: null),
-     SecondScreen(screenArguments: null)
+    InfoCollector(screenArguments: null),
+     ViewProfile(screenArguments: null)
   ];
   @override
   Widget build(BuildContext context) {
@@ -30,8 +30,8 @@ class _GroceryAppState extends State<GroceryApp> {
       child: MaterialApp(
         initialRoute: '/',
         routes: {
-          Routes.editProfile: (context) => FirstScreen(screenArguments: null),
-          Routes.viewProfile: (context) => SecondScreen(screenArguments: null),
+          Routes.editProfile: (context) => InfoCollector(screenArguments: null),
+          Routes.viewProfile: (context) => ViewProfile(screenArguments: null),
         },
         debugShowCheckedModeBanner: false,
       home: Scaffold(

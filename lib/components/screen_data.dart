@@ -7,5 +7,5 @@ class ScreenData extends ScreenArguments {
   String fatherName = "";
   int age = 0;
 
-  ScreenData({required this.name, fatherName, age});
+  ScreenData({required this.name, required this.fatherName, required this.age});
 }

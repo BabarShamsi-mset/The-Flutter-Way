@@ -6,8 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grocery_app/components/screen_data.dart';
 import 'package:grocery_app/routes/page_route.dart';
-import 'package:grocery_app/screens/first_screen.dart';
-import 'package:grocery_app/screens/second_screen.dart';
+
+import '../screens/info_collector_screen.dart';
+import '../screens/profile_view_screen.dart';
 
 class Routes {
   static const initialRoute = '/';
@@ -21,9 +22,9 @@ class Routes {
           settings.arguments is ScreenArguments)) {
         switch(settings.name) {
           case Routes.editProfile:
-            return buildRoute(screen: FirstScreen(screenArguments: null,));
+            return buildRoute(screen: InfoCollector(screenArguments: null,));
           case Routes.viewProfile:
-            return  buildRoute(screen: SecondScreen(screenArguments: tryCastArguments(settings.arguments)));
+            return  buildRoute(screen: ViewProfile(screenArguments: tryCastArguments(settings.arguments)));
           default:
             return buildRoute(screen: Container());
         }
