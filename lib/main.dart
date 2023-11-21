@@ -45,8 +45,8 @@ class _GroceryAppState extends State<GroceryApp> {
         currentIndex: myIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home',),
-          BottomNavigationBarItem(icon: Icon(Icons.inbox), label: 'Inbox',),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'settings'
+          BottomNavigationBarItem(icon: Icon(Icons.info), label: 'Info',),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'
               '',),
         ],
       ),
