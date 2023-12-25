@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_calculator/bill_model.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(TipCalculatorApp());
@@ -7,11 +9,13 @@ void main() {
 class TipCalculatorApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return ChangeNotifierProvider<BillModel>(
+      create: (context) => BillModel(),
+      child: MaterialApp(
       title: 'Tip Calculator',
       theme: ThemeData(primarySwatch: Colors.red),
       home: TipCalculator(),
-    );
+    ));
   }
 }
 
@@ -21,17 +25,8 @@ class TipCalculator extends StatefulWidget {
 }
 
 class _TipCalculatorState extends State<TipCalculator> {
-  double billAmount = 0.0;
-  double tipPercentage = 0;
-  double tipAmount = 0.0;
-  double totalAmount = 0.0;
 
-  void calculateTip() {
-    setState(() {
-      tipAmount = billAmount * (tipPercentage / 100);
-      totalAmount = billAmount + tipAmount;
-    });
-  }
+  double myBillAmount = 0.0;
 
   @override
   Widget build(BuildContext context) {
@@ -50,37 +45,43 @@ class _TipCalculatorState extends State<TipCalculator> {
                 labelText: 'Bill Amount',
               ),
               onChanged: (value) {
-                setState(() {
-                  billAmount = double.parse(value);
-                });
+                myBillAmount = double.parse(value);
               },
             ),
             SizedBox(height: 16.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text('Tip Percentage: $tipPercentage%'),
+                Text('Tip Percentage: ${Provider.of<BillModel>(context).tipPercentage}%'),
                 Slider(
-                  value: tipPercentage.toDouble(),
+                  value: Provider.of<BillModel>(context, listen: false).tipPercentage.toDouble(),
                   min: 0,
                   max: 20,
                   divisions: 20,
+                  label: '${Provider.of<BillModel>(context).tipPercentage}%',
                   onChanged: (value) {
-                    setState(() {
-                      tipPercentage = value.round().toDouble();
-                    });
-                    calculateTip();
+                    Provider.of<BillModel>(context, listen: false).tipPercentage = value;
                   },
                 ),
               ],
             ),
             SizedBox(height: 16.0),
-            Text('Tip Amount: \$${tipAmount.toStringAsFixed(1)}'),
+            Consumer<BillModel>(builder: (context, billModel, child)  {
+              return Text('Tip Amount: \$${billModel.calculateTotalTip().toStringAsFixed(2)}');
+              },
+            ),
+
             SizedBox(height: 16.0),
-            Text('Total Amount: \$${totalAmount.toStringAsFixed(1)}'),
+            Consumer<BillModel>(builder: (context, billModel, child){
+              return Text('Total Amount: \$${billModel.calculateTotalAmount().toStringAsFixed(2)}');
+
+            },
+            ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              onPressed: calculateTip,
+              onPressed: () {
+                Provider.of<BillModel>(context, listen: false).billAmount = myBillAmount;
+            },
               child: Text('Calculate Tip'),
             ),
           ],
