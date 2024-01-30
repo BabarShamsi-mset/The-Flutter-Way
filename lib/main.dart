@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_flutter_calculator/Services/locator_service.dart';
 
 import 'View/home_view.dart';
 
 void main() {
+  setUpLocator();
   runApp(MyApp());
 }
 

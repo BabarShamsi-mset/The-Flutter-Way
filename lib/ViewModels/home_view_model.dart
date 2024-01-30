@@ -1,13 +1,20 @@
+import 'package:my_flutter_calculator/Services/counter_service.dart';
+import 'package:my_flutter_calculator/Services/locator_service.dart';
 import 'package:stacked/stacked.dart';
 
 
-class HomeViewModel extends BaseViewModel {
-  int _counter = 0;
+class HomeViewModel extends ReactiveViewModel {
+  final CounterService counterService = locator<CounterService>();
 
-  int get counter => _counter;
+  @override
+  List<ListenableServiceMixin> get listenableServices => [
+    counterService
+  ];
 
-  void incrementCounter() {
-    _counter++;
-    notifyListeners();
-  }
+  int get counter => counterService.counterValue;
+
+  void incrementCounter() => counterService.incrementCounter();
+
+  void decrementCounter() => counterService.decrementCounter();
+
 }
