@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_flutter_calculator/views/services/grocery_view_service.dart';
+import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../ViewModels/grocery_view_model.dart';
@@ -9,7 +11,13 @@ class GroceryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<GroceryViewModel>.reactive(
-      viewModelBuilder: () => GroceryViewModel(),
+      // Set disposeViewModel to false This tells Stacked not to dispose the
+      // ViewModel when the widget is removed from the widget tree
+      disposeViewModel: false,
+      // initialiseSpecialViewModelsOnce to true tell the ViewModelBuilder you only want the initialisation for a
+      //  specialty view model to fire once.
+      initialiseSpecialViewModelsOnce: true,
+      viewModelBuilder: () => locator<GroceryViewModel>(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(title: Text('Grocery App Using Stack')),
         body: Column(
@@ -17,7 +25,11 @@ class GroceryView extends StatelessWidget {
           children: [
             HorizontalTilesList(),
             const SizedBox(height: 20.0),
-            Text("Popular"),
+            ElevatedButton(onPressed: () {
+              model.setCounter();
+            }, child: Text('Click me')),
+            const SizedBox(height: 20.0),
+            Text("Popular: "+ model.counter.toString()),
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(10),
@@ -26,22 +38,22 @@ class GroceryView extends StatelessWidget {
                     childAspectRatio: 2 / 3,
                     crossAxisSpacing: 20,
                     mainAxisSpacing: 20),
-                itemCount: model.groceryList.length,
+                itemCount: model.itemList.length,
                 itemBuilder: (BuildContext context, index) {
                   return GridTile(
                       footer: GridTileBar(
                         backgroundColor: Colors.black54,
                         title: Text(
-                          model.groceryList[index].name,
+                          model.itemList[index].name,
                           style: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         subtitle:
-                            Text(model.groceryList[index].price.toString()),
+                            Text(model.itemList[index].price.toString()),
                         trailing: const Icon(Icons.shopping_cart),
                       ),
                       // child: Image.network("https://www.kindacode.com/wp-content/uploads/2021/12/phone.jpeg", fit: BoxFit.cover));
-                      child: Image.asset(model.groceryList[index].image,
+                      child: Image.asset(model.itemList[index].image,
                           fit: BoxFit.cover));
                 },
               ),
@@ -83,12 +95,22 @@ class CustomListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var viewModel = Provider.of<GroceryViewModel>(context);
     return Container(
       width: 150,
       child: Card(
         color: Colors.blueGrey,
         child: InkWell(
           onTap: () {
+            if(typeOfTile == "Foods") {
+              viewModel.updateSelectedItemType(viewModel.selectedItemType =
+                  ItemType.food);
+
+            }
+            else {
+              viewModel.updateSelectedItemType(viewModel.selectedItemType =
+                  ItemType.beverage);
+            }
             // handle tap
           },
           child: Padding(

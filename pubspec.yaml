@@ -30,6 +30,10 @@ environment:
 dependencies:
   stacked: ^3.4.2
   stacked_services: ^0.9.7
+
+  provider:
+
+  get_it: ^7.6.7
   flutter:
     sdk: flutter
 
