@@ -5,12 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 @RoutePage()
-class CartView extends StatelessWidget {
-  const CartView({super.key});
+class GroceryDetailView extends StatelessWidget {
+  const GroceryDetailView({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold();
   }
-  
 }

@@ -1,12 +1,16 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_flutter_calculator/routes/auto_route_config.gr.dart';
 import 'package:my_flutter_calculator/views/services/grocery_view_service.dart';
 import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
-import '../ViewModels/grocery_view_model.dart';
-import '../models/grocery_model.dart';
+import '../../ViewModels/grocery_view_model.dart';
+import '../../models/grocery_model.dart';
 
+@RoutePage()
 class GroceryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,21 +44,25 @@ class GroceryView extends StatelessWidget {
                     mainAxisSpacing: 20),
                 itemCount: model.itemList.length,
                 itemBuilder: (BuildContext context, index) {
-                  return GridTile(
-                      footer: GridTileBar(
-                        backgroundColor: Colors.black54,
-                        title: Text(
-                          model.itemList[index].name,
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        subtitle:
-                            Text(model.itemList[index].price.toString()),
-                        trailing: const Icon(Icons.shopping_cart),
-                      ),
-                      // child: Image.network("https://www.kindacode.com/wp-content/uploads/2021/12/phone.jpeg", fit: BoxFit.cover));
-                      child: Image.asset(model.itemList[index].image,
-                          fit: BoxFit.cover));
+                  return GestureDetector(
+                      onTap: () {
+                        AutoRouter.of(context).push(const GroceryDetailRoute());
+                      },
+                      child: GridTile(
+                          footer: GridTileBar(
+                            backgroundColor: Colors.black54,
+                            title: Text(
+                              model.itemList[index].name,
+                              style: const TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            subtitle:
+                                Text(model.itemList[index].price.toString()),
+                            trailing: const Icon(Icons.shopping_cart),
+                          ),
+                          // child: Image.network("https://www.kindacode.com/wp-content/uploads/2021/12/phone.jpeg", fit: BoxFit.cover));
+                          child: Image.asset(model.itemList[index].image,
+                              fit: BoxFit.cover)));
                 },
               ),
             ),
