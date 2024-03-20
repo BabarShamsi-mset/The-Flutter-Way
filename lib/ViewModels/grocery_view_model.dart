@@ -2,30 +2,44 @@
 
 import 'package:my_flutter_calculator/models/grocery_model.dart';
 import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 
 class GroceryViewModel extends BaseViewModel {
 
-  int counter = 0;
   int index = 0;
-  ItemType selectedItemType = ItemType.food;
+  ItemType selectedItemType = ItemType.Fruits;
+  String imagePrefix = 'assets/images/';
 
-  void setCounter() {
-    counter++;
-    notifyListeners();
-  }
-
-  List<GroceryModel> _BeveragesList = [
-    GroceryModel(name: "Orange juice", price: 10, image: "assets/images/orange"
-        ".jpeg"),
-    GroceryModel(name: "Apple juice",
-        price: 10, image: "assets/images/apple.png")
+  List<GroceryModel> _FruitList = [
+    GroceryModel(
+        name: "Apple",
+        price: 1.50,
+        image: "assets/images/apple_cart.png",
+    favourite: "assets/images/favourite.png"),
+    GroceryModel(
+        name: "Strawberry",
+        price: 2.50,
+        image: "assets/images/straw"
+            "ber"
+            "ry_cart.png",
+        favourite: "assets/images/favourite.png"),
+    GroceryModel(
+        name: "Capcicum",
+        price: 1.50,
+        image: "assets/images/capcicum_cart.png",
+        favourite: "assets/images/favourite.png"),
+    GroceryModel(
+        name: "Dragon",
+        price: 1.25,
+        image: "assets/images/dragon_cart.png",
+        favourite: "assets/images/favourite.png"),
   ];
 
   List<GroceryModel> _foodList = [
-    GroceryModel(name: "Biryani", price: 5, image: "assets/images/biryani.jpeg"),
+    GroceryModel(name: "Biryani", price: 5, image: "assets/images/biryani.jpeg",
+        favourite: "assets/images/favourite.png"),
     GroceryModel(name: "Karahi",
-        price: 10, image: "assets/images/karahi.jpeg")
+        price: 10, image: "assets/images/karahi.jpeg",
+        favourite: "assets/images/favourite.png")
   ];
 
   List<GroceryModel> get itemList {
@@ -33,12 +47,12 @@ class GroceryViewModel extends BaseViewModel {
     // value you want to use
 
     switch (itemType) {
-      case ItemType.food:
+      case ItemType.Fruits:
+        return _FruitList;
+      case ItemType.Food:
         return _foodList;
-      case ItemType.beverage:
-        return _BeveragesList;
       default:
-        throw Exception("Invalid ItemType");
+        return [];
     }
   }
 
@@ -47,10 +61,13 @@ class GroceryViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  void toggleImage(int index) {
+    itemList[index].isImageToggled = !itemList[index].isImageToggled;
 
-
-  // List<GroceryModel> get foodsList => _foodList;
-  // List<GroceryModel> get karahiList => _BeveragesList;
+    itemList[index].favourite = itemList[index].isImageToggled ?
+    '${imagePrefix}un_favourite.png' : '${imagePrefix}favourite.png';
+    notifyListeners();
+  }
 
   void addGroceryItem(GroceryModel model) {
     _foodList.add(model);
@@ -59,6 +76,11 @@ class GroceryViewModel extends BaseViewModel {
 }
 
 enum ItemType {
-  food,
-  beverage,
+  Fruits,
+  Food,
+  Fast_food,
+  Vegetables,
+  Beverage,
+  Sweets,
+  Crockery
 }

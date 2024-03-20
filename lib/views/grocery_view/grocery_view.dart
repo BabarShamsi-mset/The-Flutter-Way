@@ -4,11 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_flutter_calculator/routes/auto_route_config.gr.dart';
 import 'package:my_flutter_calculator/views/services/grocery_view_service.dart';
-import 'package:provider/provider.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../ViewModels/grocery_view_model.dart';
-import '../../models/grocery_model.dart';
+import 'horizontal_tiles.dart';
 
 @RoutePage()
 class GroceryView extends StatelessWidget {
@@ -29,40 +28,20 @@ class GroceryView extends StatelessWidget {
           children: [
             HorizontalTilesList(),
             const SizedBox(height: 20.0),
-            ElevatedButton(onPressed: () {
-              model.setCounter();
-            }, child: Text('Click me')),
-            const SizedBox(height: 20.0),
-            Text("Popular: "+ model.counter.toString()),
             Expanded(
               child: GridView.builder(
                 padding: const EdgeInsets.all(10),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 200,
+                    maxCrossAxisExtent: 180,
                     childAspectRatio: 2 / 3,
-                    crossAxisSpacing: 20,
+                    crossAxisSpacing: 40,
                     mainAxisSpacing: 20),
                 itemCount: model.itemList.length,
                 itemBuilder: (BuildContext context, index) {
-                  return GestureDetector(
-                      onTap: () {
-                        AutoRouter.of(context).push(const GroceryDetailRoute());
-                      },
-                      child: GridTile(
-                          footer: GridTileBar(
-                            backgroundColor: Colors.black54,
-                            title: Text(
-                              model.itemList[index].name,
-                              style: const TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            subtitle:
-                                Text(model.itemList[index].price.toString()),
-                            trailing: const Icon(Icons.shopping_cart),
-                          ),
-                          // child: Image.network("https://www.kindacode.com/wp-content/uploads/2021/12/phone.jpeg", fit: BoxFit.cover));
-                          child: Image.asset(model.itemList[index].image,
-                              fit: BoxFit.cover)));
+                  return SizedBox(
+                    height: 50,
+                    child: MyCustomGridItem(index: index, model: model)
+                  );
                 },
               ),
             ),
@@ -73,71 +52,101 @@ class GroceryView extends StatelessWidget {
   }
 }
 
-class HorizontalTilesList extends StatelessWidget {
+class MyCustomGridItem extends StatefulWidget {
+  final int index;
+  final GroceryViewModel model;
+
+  const MyCustomGridItem({required this.index, required this.model});
+
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: 150,
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        children: [
-          CustomListTile("Foods"),
-          CustomListTile("Drinks"),
-          CustomListTile("Fast food"),
-          CustomListTile("Vegetables"),
-          CustomListTile("Beverage"),
-          CustomListTile("Sweets"),
-          CustomListTile("Crockery"),
-        ],
-      ),
-    );
-  }
+  _MyCustomGridItemState createState() => _MyCustomGridItemState();
 }
 
-class CustomListTile extends StatelessWidget {
-  final String typeOfTile;
-
-   CustomListTile(this.typeOfTile);
+class _MyCustomGridItemState extends State<MyCustomGridItem> {
 
   @override
   Widget build(BuildContext context) {
-    var viewModel = Provider.of<GroceryViewModel>(context);
-    return Container(
-      width: 150,
+    return GestureDetector(
+      onTap: () {
+        AutoRouter.of(context).push(GroceryDetailRoute(groceryModel: widget
+            .model.itemList[widget.index]));
+      },
       child: Card(
-        color: Colors.blueGrey,
-        child: InkWell(
-          onTap: () {
-            if(typeOfTile == "Foods") {
-              viewModel.updateSelectedItemType(viewModel.selectedItemType =
-                  ItemType.food);
-
-            }
-            else {
-              viewModel.updateSelectedItemType(viewModel.selectedItemType =
-                  ItemType.beverage);
-            }
-            // handle tap
-          },
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  typeOfTile,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
+      borderOnForeground: true,
+      color: Color(0xFFF7F7F7),
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Positioned(top: 20, left: 0, right: 0,
+              child: Center(
+                child:  Image.asset(widget
+                    .model.itemList[widget
+                    .index].image,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.contain),
+              )),
+          Positioned(bottom: 10, left: 10,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget
+                      .model.itemList[widget
+                      .index].name, style: const TextStyle(color:
+              Colors.black)),
+                  SizedBox(height: 1),
+                  const Row(
+                    children: [
+                      Icon(Icons.star, color: Color(0xFFF9BD06), size: 16,),
+                      Icon(Icons.star, color: Color(0xFFF9BD06), size: 16,),
+                      Icon(Icons.star, color: Color(0xFFF9BD06), size: 16,),
+                      Icon(Icons.star, color: Color(0xFFF9BD06), size: 16,),
+                      Icon(Icons.star, color: Color(0xFFF9BD06), size: 16,),
+                    ],
                   ),
-                )
-              ],
-            ),
+                  SizedBox(height: 1),
+                      priceTagTextView(),
+                ],
+              )),
+
+
+          Positioned(right: 0, bottom: 0,
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    widget.model.toggleImage(widget.index);
+
+                  });
+                },
+                child: Image.asset(
+                    widget.model.itemList[widget.index].favourite,
+                    width: 20,
+                    height: 20,
+                    fit: BoxFit.cover)),
+              )
+        ],
+    ),
+    ));
+  }
+
+  RichText priceTagTextView() {
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(color: Colors.black),
+        children: [
+          const TextSpan(
+            text: '\$',
           ),
-        ),
+          TextSpan(
+            text: '${widget
+                .model.itemList[widget
+                .index].price}',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          const TextSpan(
+            text: '/kg',
+          ),
+        ],
       ),
     );
   }
